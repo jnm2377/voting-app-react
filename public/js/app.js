@@ -1,10 +1,46 @@
 
 class ProductList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      products: [],
+    };
+
+    this.handleProductUpVote = this.handleProductUpVote.bind(this);
+      //because we referenced "this" in our custom method below, we have to bind it
+  }
+
+  componentDidMount() {
+    this.setState( {products: Seed.products} );
+  }
+
+  //Function will be passed down as prop for update event handler in child!
+  handleProductUpVote(productId) {
+    const nextProducts = this.state.products.map( (product) => {
+      if(product.id === productId) {
+        return Object.assign({}, product, {
+          votes: product.votes + 1
+        });
+      } else {
+        return product;
+      }
+    });
+    this.setState({
+      products: nextProducts
+    });
+  }
+
   render() {
-    //variable = array with json data that we want to use
-    //loop thru array w/ .map returning each arr item w/ props
-    //props = pass down data of each arr item to child component it will be(Product)
-    const productComponents = Seed.products.map( (product) => (
+    //Sorts array of data and assigns to variable for looping thru items
+    const products = this.state.products.sort( (a, b) => (
+      b.votes - a.votes
+    ));
+
+    //loop thru array w/ .map returning new array
+    //each new arr item has props
+    //props = pass down data to child component it will be (Product)
+    const productComponents = products.map( (product) => (
       <Product
         key={'product-' + product.id}
         id={product.id}
@@ -14,6 +50,7 @@ class ProductList extends React.Component {
         votes={product.votes}
         submitterAvatarUrl={product.submitterAvatarUrl}
         productImageUrl={product.productImageUrl}
+        onVote={this.handleProductUpVote}
       />
     ));
     return (
@@ -25,9 +62,20 @@ class ProductList extends React.Component {
 }
 
 class Product extends React.Component {
+  //binding different "this"es
+  //bind custom component method to react component class
+  constructor(props) {
+    super(props);
+    this.handleUpVote = this.handleUpVote.bind(this);
+  }
+
   //will access THIS component data thru its props
   //passed down from parent component (ProductList)
   //this.props
+  handleUpVote() {
+    this.props.onVote(this.props.id);
+  }
+
   render() {
     return (
       <div className='item'>
@@ -36,7 +84,7 @@ class Product extends React.Component {
         </div>
         <div className='middle aligned content'>
           <div className='header'>
-            <a>
+            <a onClick={this.handleUpVote}>
               <i className='large caret up icon'/>
             </a>
             {this.props.votes}

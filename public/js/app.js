@@ -1,31 +1,53 @@
 
 class ProductList extends React.Component {
   render() {
+    const product = Seed.products[0];
+    //variable = json data that we want to use
+    //will pass down to child component (Product) thru props
     return (
       <div className='ui unstackable items'>
-        <Product/>
+        <Product
+          id={product.id}
+          title={product.title}
+          description={product.description}
+          url={product.url}
+          votes={product.votes}
+          submitterAvatarUrl={product.submitterAvatarUrl}
+          productImageUrl={product.productImageUrl}
+        />
       </div>
     );
   }
 }
 
 class Product extends React.Component {
+  //will access THIS component data thru its props
+  //passed down from parent component (ProductList)
+  //this.props
   render() {
     return (
       <div className='item'>
         <div className='image'>
-          <img src='images/products/image-aqua.png'/>
+          <img src={this.props.productImageUrl} />
         </div>
         <div className='middle aligned content'>
+          <div className='header'>
+            <a>
+              <i className='large caret up icon'/>
+            </a>
+            {this.props.votes}
+          </div>
           <div className='description'>
-            <a>Fort Knight</a>
-            <p>Authentic renaissance actors, delivered in just two weeks.</p>
+            <a href={this.props.url}>
+              {this.props.title}
+            </a>
+            <p>{this.props.description}</p>
           </div>
           <div className='extra'>
             <span>Submitted by:</span>
             <img
               className='ui avatar image'
-              src='images/avatars/daniel.jpg'
+              src={this.props.submitterAvatarUrl}
             />
           </div>
         </div>

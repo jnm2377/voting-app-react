@@ -11,7 +11,11 @@
   },
   "private": true,
   "devDependencies": {
-    "concurrently": "2.2.0",
+    "concurrently": "^3.6.0",
     "live-server": "https://github.com/acco/live-server/tarball/master"
+  },
+  "dependencies": {
+    "fsevents": "^1.2.4",
+    "react": "^16.4.1"
   }
 }

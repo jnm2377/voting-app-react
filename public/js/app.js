@@ -62,19 +62,12 @@ class ProductList extends React.Component {
 }
 
 class Product extends React.Component {
-  //binding different "this"es
-  //bind custom component method to react component class
-  constructor(props) {
-    super(props);
-    this.handleUpVote = this.handleUpVote.bind(this);
-  }
-
   //will access THIS component data thru its props
   //passed down from parent component (ProductList)
   //this.props
-  handleUpVote() {
-    this.props.onVote(this.props.id);
-  }
+  handleUpVote = () => (
+    this.props.onVote(this.props.id)
+  );
 
   render() {
     return (

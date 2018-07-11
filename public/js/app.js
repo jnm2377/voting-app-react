@@ -1,22 +1,15 @@
 
 class ProductList extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      products: [],
-    };
-
-    this.handleProductUpVote = this.handleProductUpVote.bind(this);
-      //because we referenced "this" in our custom method below, we have to bind it
-  }
+  this.state = {
+    products: [],
+  };
 
   componentDidMount() {
     this.setState( {products: Seed.products} );
   }
 
   //Function will be passed down as prop for update event handler in child!
-  handleProductUpVote(productId) {
+  handleProductUpVote = (productId) => {
     const nextProducts = this.state.products.map( (product) => {
       if(product.id === productId) {
         return Object.assign({}, product, {
